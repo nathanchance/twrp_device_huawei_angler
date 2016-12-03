@@ -1,20 +1,8 @@
 [
   {
-    "remote": "omnirom",
-    "repository": "android_kernel_huawei_angler",
+    "remote": "flash-kernel",
+    "repository": "angler",
     "target_path": "kernel/huawei/angler",
-    "revision": "android-6.0"
-  },
-  {
-    "remote": "omnirom",
-    "repository": "android_packages_apps_SnapdragonCamera",
-    "target_path": "packages/apps/SnapdragonCamera",
-    "revision": "android-6.0"
-  },
-  {
-    "remote": "omnirom",
-    "repository": "android_hardware_qcom_camera",
-    "target_path": "hardware/qcom/camera",
-    "revision": "android-6.0"
+    "revision": "7.1.2-flash"
   }
 ]
