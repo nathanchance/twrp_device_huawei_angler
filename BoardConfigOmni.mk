@@ -37,3 +37,4 @@ BOARD_HAS_NO_REAL_SDCARD := true
 TW_INCLUDE_CRYPTO := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TARGET_RECOVERY_QCOM_RTC_FIX := true
+TARGET_RECOVERY_DEVICE_DIRS := device/huawei/angler
