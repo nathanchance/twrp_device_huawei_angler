@@ -1,6 +1,6 @@
 [
   {
-    "remote": "flash-kernel",
+    "remote": "nathanchance",
     "repository": "angler",
     "target_path": "kernel/huawei/angler",
     "revision": "7.1.2-flash"
