@@ -4,8 +4,8 @@ TARGET_KERNEL_SOURCE := kernel/huawei/angler
 TARGET_KERNEL_CONFIG := flash_defconfig
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
-TARGET_USES_UNCOMPRESSED_KERNEL := true
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/aarch64/aarch64-linaro-linux-gnueabi-7.x/bin
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linaro-linux-gnueabi-
 
 # Camera
 BOARD_USES_AOSP_CAMERA := true
@@ -37,4 +37,11 @@ BOARD_HAS_NO_REAL_SDCARD := true
 TW_INCLUDE_CRYPTO := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TARGET_RECOVERY_QCOM_RTC_FIX := true
+
+# nathanchance TWRP additions
+TARGET_USERIMAGES_USE_F2FS := true
 TARGET_RECOVERY_DEVICE_DIRS := device/huawei/angler
+TW_MAX_BRIGHTNESS := 255
+TW_DEFAULT_BRIGHTNESS := 149
+TW_EXCLUDE_SUPERSU := true
+TWRP_INCLUDE_LOGCAT := true

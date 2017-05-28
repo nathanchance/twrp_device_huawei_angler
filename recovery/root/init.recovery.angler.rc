@@ -13,6 +13,10 @@ service pulldecryptfiles /sbin/pulldecryptfiles.sh
     group root
     seclabel u:r:recovery:s0
 
+on early-init
+    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
+    write /sys/block/mmcblk0/queue/nr_requests 256
+
 on fs
     # needed to make qseecomd work in recovery
     symlink /dev/block/platform/soc.0/f9824900.sdhci /dev/block/bootdevice
@@ -21,6 +25,59 @@ on fs
     chmod 0664 /dev/ion
     chown system system /dev/ion
     start pulldecryptfiles
+
+on property:sys.boot_completed=1
+    # Tweak block
+    write /sys/block/mmcblk0/queue/read_ahead_kb 512
+
+    # Flash Performance profile
+    # Frequency values
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1708800
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 633600
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2054400
+    # Little values
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor flash
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/go_hispeed_load 99
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/above_hispeed_delay "0 1344000:30000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/timer_rate 30000
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/hispeed_freq 768000
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/timer_slack -1
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/target_loads "45 672000:55 768000:55 864000:60 960000:70 1248000:80 1344000:80 1478400:85 1555200:99"
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/min_sample_time 60000
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/align_windows 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/use_migration_notif 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/use_sched_load 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/max_freq_hysteresis 80000
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/fastlane 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/fastlane_threshold 65
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/powersave_bias 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/ignore_hispeed_on_notif 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/fast_ramp_down 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/flash/screen_off_maxfreq 1248000
+    # Big values
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor flash
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/go_hispeed_load 95
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/above_hispeed_delay "30000 960000:60000 1728000:20000"
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/timer_rate 30000
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/hispeed_freq 633600
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/timer_slack -1
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/target_loads "90 768000:75 864000:80 960000:85 1248000:85 1824000:99 1958400:99"
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/min_sample_time 30000
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/align_windows 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/use_migration_notif 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/use_sched_load 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/max_freq_hysteresis 80000
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/fastlane 1
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/fastlane_threshold 80
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/powersave_bias 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/ignore_hispeed_on_notif 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/fast_ramp_down 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/flash/screen_off_maxfreq 960000
+    # Input boost values
+    write /sys/module/cpu_boost/parameters/input_boost_enabled 1
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1248000 1:1248000 2:1248000 3:1248000 4:768000 5:768000 6:768000 7:768000"
+    write /sys/module/cpu_boost/parameters/input_boost_ms 80
 
 on property:ro.crypto.state=encrypted
     start sbinqseecomd
