@@ -1,38 +1,40 @@
-# Inherit omni-specific board config
-include device/huawei/angler/BoardConfigOmni.mk
-
-# Inherit base AOSP device configuration
-$(call inherit-product, device/huawei/angler/aosp_angler.mk)
-
-# Inherit APNs list
-$(call inherit-product, vendor/omni/config/gsm.mk)
+# Inherit AOSP base telephony config
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
 
-# Bootanimation
-TARGET_BOOTANIMATION_SIZE := 960x640
+# Inline kernel
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+TARGET_KERNEL_SOURCE := kernel/huawei/angler
+TARGET_KERNEL_CONFIG := flash_defconfig
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/aarch64/aarch64-linaro-linux-gnueabi-7.x/bin
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linaro-linux-gnueabi-
+
+# Skip keymaster compilation
+TARGET_PROVIDES_KEYMASTER := true
 
 # TWRP
 PRODUCT_COPY_FILES += \
     device/huawei/angler/twrp.fstab:recovery/root/etc/twrp.fstab
+TW_THEME := portrait_hdpi
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+RECOVERY_SDCARD_ON_DATA := true
+BOARD_HAS_NO_REAL_SDCARD := true
+TW_INCLUDE_CRYPTO := true
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TARGET_RECOVERY_QCOM_RTC_FIX := true
 
-# Allow tethering without provisioning app
-PRODUCT_PROPERTY_OVERRIDES += \
-    net.tethering.noprovisioning=true
-
-# Camera
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.camera.HAL3.enabled=1 \
-    persist.camera.cpp.duplication=false
-
-# SELinux
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.build.selinux=1
-
-# Snapdragon Camera
-PRODUCT_PACKAGES += \
-    SnapdragonCamera
+# nathanchance TWRP additions
+TARGET_USERIMAGES_USE_F2FS := true
+TARGET_RECOVERY_DEVICE_DIRS := device/huawei/angler
+TW_MAX_BRIGHTNESS := 255
+TW_DEFAULT_BRIGHTNESS := 149
+TW_EXCLUDE_SUPERSU := true
+TWRP_INCLUDE_LOGCAT := true
 
 # Override product naming for Omni
 PRODUCT_NAME := omni_angler
@@ -42,7 +44,9 @@ PRODUCT_MODEL := Nexus 6P
 PRODUCT_MANUFACTURER := Huawei
 PRODUCT_RESTRICT_VENDOR_FILES := false
 
-PRODUCT_BUILD_PROP_OVERRIDES += \
-    BUILD_FINGERPRINT=google/angler/angler:6.0.1/MTC20F/3031278:user/release-keys \
-    PRIVATE_BUILD_DESC="angler-user 6.0.1 MTC20F 3031278 release-keys" \
-    BUILD_ID=MTC20F
+PRODUCT_COPY_FILES += \
+    device/huawei/angler/ueventd.angler.rc:root/ueventd.angler.rc
+
+# for off charging mode
+PRODUCT_PACKAGES += \
+    charger_res_images
