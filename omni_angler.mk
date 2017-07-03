@@ -10,8 +10,8 @@ TARGET_KERNEL_SOURCE := kernel/huawei/angler
 TARGET_KERNEL_CONFIG := flash_defconfig
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
-KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/aarch64/aarch64-linaro-linux-gnueabi-7.x/bin
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linaro-linux-gnueabi-
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/aarch64/aarch64-linaro-linux-gnu-7.x/bin
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linaro-linux-gnu-
 
 # Skip keymaster compilation
 TARGET_PROVIDES_KEYMASTER := true
