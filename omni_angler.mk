@@ -50,3 +50,6 @@ PRODUCT_COPY_FILES += \
 # for off charging mode
 PRODUCT_PACKAGES += \
     charger_res_images
+
+# Add my personal keys
+PRODUCT_EXTRA_RECOVERY_KEYS := device/huawei/angler/recovery/keys/nathan
